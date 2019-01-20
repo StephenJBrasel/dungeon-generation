@@ -19,7 +19,6 @@ projects. My success in that reguard is up for debate.
 import tcod
 import random
 from math import sqrt
-from collections import OrderedDict
 
 SCREEN_WIDTH = 80
 SCREEN_HEIGHT = 60
@@ -39,19 +38,19 @@ class UserInterface:
 		self.con = tcod.console_new(SCREEN_WIDTH, SCREEN_HEIGHT)
 		
 		self.textBox = tcod.console_new(SCREEN_WIDTH,TEXTBOX_HEIGHT)
-		self.helpText = OrderedDict([
-		("1","Tunneling Algorithm"),
-		("2","BSP Tree Algorithm"),
-		("3","Random Walk Algorithm"),
-		("4","Cellular Automata"),
-		("5","Room Addition"),
-		("6","City Buildings"),
-		("7","Maze with Rooms"),
-		("8","Messy BSP Tree"),
-		("9"," "),
-		("0","Change Color Scheme"),
-		("Space","Remake Dungeon")
-		])
+		self.helpText = {
+		"1":"Tunneling Algorithm",
+		"2":"BSP Tree Algorithm",
+		"3":"Random Walk Algorithm",
+		"4":"Cellular Automata",
+		"5":"Room Addition",
+		"6":"City Buildings",
+		"7":"Maze with Rooms",
+		"8":"Messy BSP Tree",
+		"9":" ",
+		"0":"Change Color Scheme",
+		"Space":"Remake Dungeon"
+		}
 
 		self._colorScheme = 0
 		self.setColorScheme(self._colorScheme)
@@ -1585,7 +1584,8 @@ class MazeWithRooms:
 
 			# clear the sources, they are no longer needed
 			for s in sources:
-				openRegions.remove(s)
+				if s in openRegions:
+					openRegions.remove(s)
 
 			# remove the unneeded connectors
 			toBeRemoved = set()
