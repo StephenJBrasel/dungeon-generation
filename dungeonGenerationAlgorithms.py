@@ -3,7 +3,7 @@
 Dungeon Generation Algorithms
 =============================
 
-This is an implimentation of some of the dungeon generating
+This is an update to the implimentation of some of the dungeon generating
 algorithms that are often brought up when talking about roguelikes.
 
 Most of these algorithms have been copied from online sources.
