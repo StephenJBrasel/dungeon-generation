@@ -3,7 +3,7 @@
 Dungeon Generation Algorithms
 =============================
 
-This is an implimentation of some of the dungeon generating
+This is an update to the implimentation of some of the dungeon generating
 algorithms that are often brought up when talking about roguelikes.
 
 Most of these algorithms have been copied from online sources.
@@ -19,7 +19,6 @@ projects. My success in that reguard is up for debate.
 import tcod as libtcod
 import random
 from math import sqrt
-from collections import OrderedDict
 
 SCREEN_WIDTH = 80
 SCREEN_HEIGHT = 60
@@ -34,24 +33,24 @@ USE_PREFABS = False
 
 class UserInterface:
 	def __init__(self):
-		libtcod.console_set_custom_font('arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_TCOD)
+		libtcod.console_set_custom_font('arial10x10.png', libtcod.FONT_TYPE_GREYSCALE | libtcod.FONT_LAYOUT_libtcod)
 		libtcod.console_init_root(SCREEN_WIDTH, SCREEN_HEIGHT, 'Roguelike Dungeon Comparison', False) #TODO: Change Game Name
 		self.con = libtcod.console_new(SCREEN_WIDTH, SCREEN_HEIGHT)
 		
 		self.textBox = libtcod.console_new(SCREEN_WIDTH,TEXTBOX_HEIGHT)
-		self.helpText = OrderedDict([
-		("1","Tunneling Algorithm"),
-		("2","BSP Tree Algorithm"),
-		("3","Random Walk Algorithm"),
-		("4","Cellular Automata"),
-		("5","Room Addition"),
-		("6","City Buildings"),
-		("7","Maze with Rooms"),
-		("8","Messy BSP Tree"),
-		("9"," "),
-		("0","Change Color Scheme"),
-		("Space","Remake Dungeon")
-		])
+		self.helpText = {
+		"1":"Tunneling Algorithm",
+		"2":"BSP Tree Algorithm",
+		"3":"Random Walk Algorithm",
+		"4":"Cellular Automata",
+		"5":"Room Addition",
+		"6":"City Buildings",
+		"7":"Maze with Rooms",
+		"8":"Messy BSP Tree",
+		"9":" ",
+		"0":"Change Color Scheme",
+		"Space":"Remake Dungeon"
+		}
 
 		self._colorScheme = 0
 		self.setColorScheme(self._colorScheme)
@@ -341,11 +340,11 @@ class TunnelingAlgorithm:
 				self.level[x][y] = 0
 
 	def createHorTunnel(self, x1, x2, y):
-		for x in range(min(x1,x2),max(x1,x2)+1):
+		for x in range(int(min(x1,x2)),int(max(x1,x2))+1):
 			self.level[x][y] = 0
 
 	def createVirTunnel(self, y1, y2, x):
-		for y in range(min(y1,y2),max(y1,y2)+1):
+		for y in range(int(min(y1,y2)),int(max(y1,y2))+1):
 			self.level[x][y] = 0
 
 # ==== BSP Tree ====
@@ -727,7 +726,7 @@ class CellularAutomata:
 					for nextPoint in nextCave: break # get an element from cave1
 					# compare distance of point1 to old and new point2
 					newDistance = self.distanceFormula(point1,nextPoint)
-					if (newDistance < distance) or distance == None:
+					if distance == None or (newDistance < distance):
 						point2 = nextPoint
 						distance = newDistance
 
@@ -1095,7 +1094,7 @@ class RoomAddition:
 		for x in range (roomWidth):
 			for y in range (roomHeight):
 				if room[x][y] == 0:
-					self.level[roomX+x][roomY+y] = 0
+					self.level[int(roomX)+x][int(roomY)+y] = 0
 
 		self.rooms.append(room)
 
@@ -1621,8 +1620,8 @@ class MazeWithRooms:
 
 	def createRoom(self, room):
 		# set all tiles within a rectangle to 0
-		for x in range(room.x1, room.x2):
-			for y in range(room.y1, room.y2):
+		for x in range(int(room.x1), int(room.x2)):
+			for y in range(int(room.y1), int(room.y2)):
 				self.carve(x,y)
 
 	def addJunction(self,pos):
